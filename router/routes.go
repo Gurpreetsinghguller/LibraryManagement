@@ -1,11 +1,11 @@
 package router
 
 import (
-	"net/http"
-
 	"library/controller"
+
+	"github.com/labstack/echo/v4"
 )
 
-func InitializeRoutes(app *controller.Application) {
-	http.Handle("/healthcheck", app.HealthCheck())
+func InitializeRoutes(app *controller.Application, e *echo.Echo) {
+	e.GET("/healthcheck", app.HealthCheck)
 }

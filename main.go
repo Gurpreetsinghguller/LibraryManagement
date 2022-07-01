@@ -1,13 +1,12 @@
 package main
 
 import (
-	"log"
-	"net/http"
-
 	"library/controller"
 	"library/db/dbconn"
 	"library/postgres"
 	"library/router"
+
+	"github.com/labstack/echo/v4"
 )
 
 var (
@@ -34,9 +33,10 @@ func init() {
 }
 
 func main() {
+	e := echo.New()
 	// initialize routes
-	router.InitializeRoutes(app)
+	router.InitializeRoutes(app, e)
 
 	// run server
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	e.Logger.Fatal(e.Start(":3000"))
 }
