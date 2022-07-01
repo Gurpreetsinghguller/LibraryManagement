@@ -13,7 +13,7 @@ type Postgres struct {
 
 // New Instantiates Postgres service.
 func NewPostgres() (*Postgres, error) {
-	db, err := getDBInstance("postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")
+	db, err := getDBInstance("")
 	if err != nil {
 		return nil, err
 	}
