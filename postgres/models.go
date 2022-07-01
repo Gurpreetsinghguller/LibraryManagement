@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	"library/commons/dbconn"
+	"library/db/dbconn"
 	"library/model"
 )
 

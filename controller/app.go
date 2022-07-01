@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"library/commons/dbconn"
+	"library/db/dbconn"
 	"library/postgres"
 )
 

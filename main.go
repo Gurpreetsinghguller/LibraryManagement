@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"library/commons/dbconn"
 	"library/controller"
+	"library/db/dbconn"
 	"library/postgres"
 	"library/router"
 )
