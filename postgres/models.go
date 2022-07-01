@@ -1,19 +1,19 @@
 package postgres
 
 import (
-	"booklibrary/commons/utils"
-	"booklibrary/model"
+	"library/commons/dbconn"
+	"library/model"
 )
 
 type Application struct {
-	db *utils.Postgres
+	db *dbconn.Postgres
 }
 
 type Models struct {
 	Book model.BookHelper
 }
 
-func NewModels(db *utils.Postgres) *Models {
+func NewModels(db *dbconn.Postgres) *Models {
 	app := &Application{db: db}
 	return &Models{
 		Book: &BookHelper{app},

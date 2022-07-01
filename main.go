@@ -4,14 +4,14 @@ import (
 	"log"
 	"net/http"
 
-	"booklibrary/commons/utils"
-	"booklibrary/controller"
-	"booklibrary/postgres"
-	"booklibrary/router"
+	"library/commons/dbconn"
+	"library/controller"
+	"library/postgres"
+	"library/router"
 )
 
 var (
-	conn   *utils.Postgres
+	conn   *dbconn.Postgres
 	models *postgres.Models
 	app    *controller.Application
 )
@@ -21,7 +21,7 @@ func init() {
 	// Load Env
 
 	// Connect to DB
-	conn, err = utils.NewPostgres()
+	conn, err = dbconn.NewPostgres()
 	if err != nil {
 		panic(err)
 	}
@@ -34,6 +34,9 @@ func init() {
 }
 
 func main() {
+	// initialize routes
 	router.InitializeRoutes(app)
+
+	// run server
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }

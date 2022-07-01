@@ -1,16 +1,16 @@
 package controller
 
 import (
-	"booklibrary/commons/utils"
-	"booklibrary/postgres"
+	"library/commons/dbconn"
+	"library/postgres"
 )
 
 type Application struct {
-	db     *utils.Postgres
+	db     *dbconn.Postgres
 	models *postgres.Models
 }
 
-func New(db *utils.Postgres, models *postgres.Models) *Application {
+func New(db *dbconn.Postgres, models *postgres.Models) *Application {
 	app := &Application{
 		db:     db,
 		models: models,
