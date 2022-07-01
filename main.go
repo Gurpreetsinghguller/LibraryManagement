@@ -1,11 +1,14 @@
 package main
 
 import (
+	"log"
+
 	"library/controller"
 	"library/db/dbconn"
 	"library/postgres"
 	"library/router"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +20,12 @@ var (
 
 func init() {
 	var err error
+
 	// Load Env file
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	// Connect to DB
 	conn, err = dbconn.NewPostgres()

@@ -1,5 +1,5 @@
 package postgres
 
-type BookHelper struct {
+type BookManager struct {
 	app *Application
 }

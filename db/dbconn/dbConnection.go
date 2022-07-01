@@ -3,6 +3,7 @@ package dbconn
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -13,7 +14,7 @@ type Postgres struct {
 
 // New Instantiates Postgres service.
 func NewPostgres() (*Postgres, error) {
-	db, err := getDBInstance("")
+	db, err := getDBInstance(os.Getenv("DB_URL"))
 	if err != nil {
 		return nil, err
 	}

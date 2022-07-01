@@ -10,12 +10,16 @@ type Application struct {
 }
 
 type Models struct {
-	Book model.BookHelper
+	Book    model.BookManager
+	Country model.CountryManager
+	Author  model.AuthorManager
 }
 
 func NewModels(db *dbconn.Postgres) *Models {
 	app := &Application{db: db}
 	return &Models{
-		Book: &BookHelper{app},
+		Book:    &BookManager{app},
+		Country: &CountryManager{app},
+		Author:  &AuthorManager{app},
 	}
 }

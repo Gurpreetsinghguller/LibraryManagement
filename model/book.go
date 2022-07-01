@@ -1,9 +1,14 @@
 package model
 
 type BookItems struct {
-	// Various fields related to books
+	ID       string  `db:"id"`
+	Name     string  `db:"name"`
+	Author   string  `db:"author"`
+	Country  int     `db:"country"`
+	Category int     `db:"category"`
+	Price    float32 `db:"price"`
 }
-type BookHelper interface {
+type BookManager interface {
 	// Get Books
 	// Save Books
 }
