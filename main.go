@@ -18,7 +18,7 @@ var (
 
 func init() {
 	var err error
-	// Load Env
+	// Load Env file
 
 	// Connect to DB
 	conn, err = dbconn.NewPostgres()
