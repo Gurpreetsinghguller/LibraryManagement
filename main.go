@@ -3,11 +3,13 @@ package main
 import (
 	"log"
 
+	"library/commons/utils"
 	"library/controller"
 	"library/db/dbconn"
 	"library/postgres"
 	"library/router"
 
+	"github.com/go-playground/validator"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
@@ -42,6 +44,11 @@ func init() {
 
 func main() {
 	e := echo.New()
+
+	// initialize validator
+
+	e.Validator = &utils.CustomValidator{Validator: validator.New()}
+
 	// initialize routes
 	router.InitializeRoutes(app, e)
 

@@ -18,7 +18,6 @@ func (app *Application) SaveBook(c echo.Context) error {
 		countryItem  model.CountryItem
 		categoryItem model.CategoryItem
 	)
-	// add validator
 
 	// bind request
 	u := new(types.Book)
@@ -27,6 +26,16 @@ func (app *Application) SaveBook(c echo.Context) error {
 		return &echo.HTTPError{
 			Code:    http.StatusInternalServerError,
 			Message: "internal error",
+		}
+	}
+
+	// validator
+	if err = c.Validate(u); err != nil {
+		c.Echo().Logger.Error("error validating request body:", err)
+		return &echo.HTTPError{
+			Code:     http.StatusBadRequest,
+			Message:  "error validating request body",
+			Internal: err,
 		}
 	}
 
