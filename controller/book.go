@@ -18,11 +18,16 @@ func (app *Application) SaveBook(c echo.Context) error {
 		countryItem  model.CountryItem
 		categoryItem model.CategoryItem
 	)
+	// add validator
 
+	// bind request
 	u := new(types.Book)
 	if err := c.Bind(u); err != nil {
 		c.Echo().Logger.Error("error binding book request:", err)
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
 	}
 
 	// check if author is configured at our end or not
@@ -30,9 +35,16 @@ func (app *Application) SaveBook(c echo.Context) error {
 	if err != nil {
 		c.Echo().Logger.Error("from get author by name:", err)
 		if errors.Is(err, sql.ErrNoRows) {
-			return c.JSON(http.StatusBadRequest, "author not configured at our end")
+			return &echo.HTTPError{
+				Code:    http.StatusBadRequest,
+				Message: "author not configured at our end",
+			}
 		}
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
+
 	}
 
 	// check if country is configured at our end or not
@@ -40,9 +52,16 @@ func (app *Application) SaveBook(c echo.Context) error {
 	if err != nil {
 		c.Echo().Logger.Error("error from get country by name:", err)
 		if errors.Is(err, sql.ErrNoRows) {
-			return c.JSON(http.StatusBadRequest, "country not configured at our end")
+			return &echo.HTTPError{
+				Code:    http.StatusBadRequest,
+				Message: "country not configured at our end",
+			}
 		}
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
+
 	}
 
 	// check if category is configured at our end or not
@@ -50,9 +69,16 @@ func (app *Application) SaveBook(c echo.Context) error {
 	if err != nil {
 		c.Echo().Logger.Error("error from get category by name:", err)
 		if errors.Is(err, sql.ErrNoRows) {
-			return c.JSON(http.StatusBadRequest, "category not configured at our end")
+			return &echo.HTTPError{
+				Code:    http.StatusBadRequest,
+				Message: "category not configured at our end",
+			}
 		}
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
+
 	}
 
 	book := model.BookItem{
@@ -67,7 +93,10 @@ func (app *Application) SaveBook(c echo.Context) error {
 	_, err = app.models.Book.SaveBook(book)
 	if err != nil {
 		c.Echo().Logger.Error("error saving book:", err)
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
 	}
 
 	c.Echo().Logger.Info("book details saved")
@@ -89,9 +118,15 @@ func (app *Application) GetBook(c echo.Context) error {
 	if err != nil {
 		c.Echo().Logger.Errorf("error getting book with name:%s err:%v", bookName, err)
 		if errors.Is(err, sql.ErrNoRows) {
-			return c.JSON(http.StatusBadRequest, "currently book is not available")
+			return &echo.HTTPError{
+				Code:    http.StatusBadRequest,
+				Message: "currently book is not available",
+			}
 		}
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
 	}
 
 	c.Echo().Logger.Info("get book details successful")
@@ -113,12 +148,18 @@ func (app *Application) ShowBook(c echo.Context) error {
 	books, err = app.models.Book.GetAllBooksByPattern(pattern)
 	if err != nil {
 		c.Echo().Logger.Errorf("error getting book with pattern:%s err:%v", pattern, err)
-		return c.JSON(http.StatusInternalServerError, "internal error")
+		return &echo.HTTPError{
+			Code:    http.StatusInternalServerError,
+			Message: "internal error",
+		}
 	}
 
 	if books == nil {
 		c.Echo().Logger.Errorf("no books available that matches the pattern:%s", pattern)
-		return c.JSON(http.StatusBadRequest, "no book availabe that matches given pattern")
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "no book availabe that matches given pattern",
+		}
 	}
 
 	c.Echo().Logger.Info("get book details successful")

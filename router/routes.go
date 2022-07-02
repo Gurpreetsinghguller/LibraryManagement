@@ -20,4 +20,6 @@ func InitializeRoutes(app *controller.Application, e *echo.Echo) {
 	e.GET("/author", app.ShowAuthor)
 	// Get all category of books
 	e.GET("/category", app.ShowCategories)
+
+	// e.Use(middleware.Logger())
 }
