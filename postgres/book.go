@@ -53,3 +53,25 @@ func (cm BookManager) GetBookDetailsByName(name string) (model.BookDetails, erro
 
 	return bookDetails, nil
 }
+
+func (cm BookManager) GetAllBooksByPattern(pattern string) ([]model.BookDetails, error) {
+	var bookDetails []model.BookDetails
+
+	query := `SELECT name FROM book b WHERE b.name LIKE '%'||$1||'%' `
+
+	rows, err := cm.app.db.DB.Query(query, pattern)
+	if err != nil {
+		return bookDetails, err
+	}
+
+	for rows.Next() {
+		product := model.BookDetails{}
+		err = rows.Scan(&product.Name)
+		if err != nil {
+			return bookDetails, err
+		}
+		bookDetails = append(bookDetails, product)
+	}
+
+	return bookDetails, nil
+}

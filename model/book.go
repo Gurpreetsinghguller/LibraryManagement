@@ -21,4 +21,5 @@ type BookDetails struct {
 type BookManager interface {
 	SaveBook(book BookItem) (BookItem, error)
 	GetBookDetailsByName(name string) (BookDetails, error)
+	GetAllBooksByPattern(pattern string) ([]BookDetails, error)
 }

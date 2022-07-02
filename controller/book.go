@@ -81,7 +81,7 @@ func (app *Application) GetBook(c echo.Context) error {
 		bookDetails model.BookDetails
 	)
 
-	// Boook name from path param from `book/:name`
+	// Boook name from path param from book/:name
 	bookName := c.Param("name")
 
 	// get book details by name
@@ -98,4 +98,31 @@ func (app *Application) GetBook(c echo.Context) error {
 
 	// Return Success message
 	return c.JSON(http.StatusOK, bookDetails)
+}
+
+func (app *Application) ShowBook(c echo.Context) error {
+	var (
+		err   error
+		books []model.BookDetails
+	)
+
+	// Pattern from query param book?name=dummy
+	pattern := c.QueryParam("name")
+
+	// Check if pattern matches any book name, give all that matches
+	books, err = app.models.Book.GetAllBooksByPattern(pattern)
+	if err != nil {
+		c.Echo().Logger.Errorf("error getting book with pattern:%s err:%v", pattern, err)
+		return c.JSON(http.StatusInternalServerError, "internal error")
+	}
+
+	if books == nil {
+		c.Echo().Logger.Errorf("no books available that matches the pattern:%s", pattern)
+		return c.JSON(http.StatusBadRequest, "no book availabe that matches given pattern")
+	}
+
+	c.Echo().Logger.Info("get book details successful")
+
+	// Return Success message
+	return c.JSON(http.StatusOK, books)
 }
