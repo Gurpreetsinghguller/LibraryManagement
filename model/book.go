@@ -10,6 +10,15 @@ type BookItem struct {
 	Category int       `db:"category"`
 	Price    float32   `db:"price"`
 }
+
+type BookDetails struct {
+	Name         string  `db:"name"`
+	Author       string  `db:"author_name"`
+	CountryName  string  `db:"country_name"`
+	CategoryName string  `db:"category_name"`
+	Price        float32 `db:"price"`
+}
 type BookManager interface {
 	SaveBook(book BookItem) (BookItem, error)
+	GetBookDetailsByName(name string) (BookDetails, error)
 }
