@@ -14,7 +14,7 @@ type BookItem struct {
 type BookDetails struct {
 	Name         string  `db:"name"`
 	Author       string  `db:"author_name"`
-	CountryName  string  `db:"country_name"`
+	PublishedIN  string  `db:"published_in"`
 	CategoryName string  `db:"category_name"`
 	Price        float32 `db:"price"`
 }

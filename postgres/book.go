@@ -34,7 +34,7 @@ func (cm BookManager) SaveBook(book model.BookItem) (model.BookItem, error) {
 func (cm BookManager) GetBookDetailsByName(name string) (model.BookDetails, error) {
 	var bookDetails model.BookDetails
 
-	query := `SELECT b.name, a.name as author_name,b.price,c1.name as country_name,c2.name as category_name
+	query := `SELECT b.name, a.name as author_name,b.price,c1.name as published_in,c2.name as category_name
 			FROM book b 
 			INNER JOIN authors a ON a.id= b.author_id
 			INNER JOIN country c1 ON c1.id=b.published_country
