@@ -5,6 +5,8 @@ go 1.18
 require github.com/lib/pq v1.10.6
 
 require (
+	github.com/google/uuid v1.3.0 // indirect
+	github.com/jmoiron/sqlx v1.3.5 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/labstack/echo/v4 v4.7.2 // indirect

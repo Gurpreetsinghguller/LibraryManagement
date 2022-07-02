@@ -1,8 +1,8 @@
 package postgres
 
 import (
+	"database/sql"
 	"errors"
-	"fmt"
 
 	"library/model"
 )
@@ -14,11 +14,15 @@ type CountryManager struct {
 func (cm CountryManager) GetCountryByName(name string) (model.CountryItem, error) {
 	var country model.CountryItem
 
-	query := fmt.Sprintf("SELECT id, name, currency FROM country c WHERE c.name=$%v", name)
+	query := `SELECT id, name, currency FROM country c WHERE c.name=$1`
 
-	row := cm.app.db.DB.QueryRow(query)
-	err := row.Scan(country)
-	if err != nil && errors.Is(err, errors.New("")) {
+	err := cm.app.db.DB.Get(&country, query, name)
+
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
+		return model.CountryItem{}, sql.ErrNoRows
+	}
+
+	if err != nil {
 		return model.CountryItem{}, err
 	}
 

@@ -1,8 +1,8 @@
 package postgres
 
 import (
+	"database/sql"
 	"errors"
-	"fmt"
 
 	"library/model"
 )
@@ -14,13 +14,18 @@ type AuthorManager struct {
 func (am AuthorManager) GetAuthorByName(name string) (model.AuthorItem, error) {
 	var author model.AuthorItem
 
-	query := fmt.Sprintf("SELECT id, name, country ,category FROM authors a WHERE a.name=$%v", name)
+	query := `SELECT id, name, country ,category FROM
+	 authors a WHERE a.name = $1`
 
-	row := am.app.db.DB.QueryRow(query)
-	err := row.Scan(author)
+	err := am.app.db.DB.Get(&author, query, name)
 
-	if err != nil && errors.Is(err, errors.New("")) {
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
+		return model.AuthorItem{}, sql.ErrNoRows
+	}
+
+	if err != nil {
 		return model.AuthorItem{}, err
 	}
+
 	return author, nil
 }

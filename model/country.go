@@ -1,7 +1,7 @@
 package model
 
 type CountryItem struct {
-	ID       string `db:"id"`
+	ID       int    `db:"id"`
 	Name     string `db:"name"`
 	Currency string `db:"currency"`
 }

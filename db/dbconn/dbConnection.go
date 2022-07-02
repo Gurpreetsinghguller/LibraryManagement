@@ -1,15 +1,17 @@
 package dbconn
 
 import (
-	"database/sql"
+	// "database/sql"
+
 	"fmt"
 	"os"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
 type Postgres struct {
-	DB *sql.DB
+	DB *sqlx.DB
 }
 
 // New Instantiates Postgres service.
@@ -22,8 +24,8 @@ func NewPostgres() (*Postgres, error) {
 	return &Postgres{DB: db}, nil
 }
 
-func getDBInstance(dbKey string) (*sql.DB, error) {
-	db, err := sql.Open("postgres", dbKey)
+func getDBInstance(dbKey string) (*sqlx.DB, error) {
+	db, err := sqlx.Open("postgres", dbKey)
 	if err != nil {
 		return nil, fmt.Errorf("error opening database: %w", err)
 	}

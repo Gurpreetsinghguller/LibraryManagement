@@ -1,35 +1,73 @@
 package controller
 
 import (
+	"database/sql"
+	"errors"
 	"net/http"
 
 	"library/commons/types"
+	"library/model"
 
 	"github.com/labstack/echo/v4"
 )
 
 func (app *Application) SaveBook(c echo.Context) error {
 	var err error
+
 	u := new(types.Book)
 	if err := c.Bind(u); err != nil {
-		return err
+		c.Echo().Logger.Error("error binding book request:", err)
+		return c.JSON(http.StatusInternalServerError, "internal error")
+	}
+
+	// check if author is configured at our end or not
+	author, err := app.models.Author.GetAuthorByName(u.Author)
+	if err != nil {
+		c.Echo().Logger.Error("from get author by name:", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.JSON(http.StatusBadRequest, "author not configured at our end")
+		}
+		return c.JSON(http.StatusInternalServerError, "internal error")
 	}
 
 	// check if country is configured at our end or not
-	_, err = app.models.Country.GetCountryByName(u.Country)
+	country, err := app.models.Country.GetCountryByName(u.Country)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "Country not configured at our end")
+		c.Echo().Logger.Error("error from get country by name:", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.JSON(http.StatusBadRequest, "country not configured at our end")
+		}
+		return c.JSON(http.StatusInternalServerError, "internal error")
 	}
-	// check if author is configured at our end or not
-	_, err = app.models.Author.GetAuthorByName(u.Author)
+
+	// check if category is configured at our end or not
+	category, err := app.models.Category.GetCategoryByName(u.Category)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "Author not configured at our end")
+		c.Echo().Logger.Error("error from get category by name:", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.JSON(http.StatusBadRequest, "category not configured at our end")
+		}
+		return c.JSON(http.StatusInternalServerError, "internal error")
+	}
+
+	book := model.BookItem{
+		Name:     u.Name,
+		Author:   author.ID,
+		Country:  country.ID,
+		Category: category.ID,
+		Price:    u.Price,
 	}
 
 	// if both configured save book details
+	_, err = app.models.Book.SaveBook(book)
+	if err != nil {
+		c.Echo().Logger.Error("error saving book:", err)
+		return c.JSON(http.StatusInternalServerError, "internal error")
+	}
 
+	c.Echo().Logger.Info("book details saved")
 	// Return Success message
-	return c.JSON(http.StatusCreated, u)
+	return c.JSON(http.StatusOK, "book saved successfully!")
 }
 
 func (app *Application) GetBook(c echo.Context) error {

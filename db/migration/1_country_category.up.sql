@@ -19,9 +19,9 @@ INSERT INTO "country" ("name", "currency") VALUES
 ('United Kingdom', 'GBP');
 
 INSERT INTO "category" ( "name") VALUES
-( 'Action'),
-( 'Classics'),
-(  'Horror'),
-( 'Fantasy'),
-( 'Romance'),
-(  'Adventure');
+('Action'),
+('Classics'),
+( 'Horror'),
+('Fantasy'),
+('Romance'),
+('Adventure');
