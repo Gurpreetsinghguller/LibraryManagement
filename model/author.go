@@ -8,6 +8,13 @@ type AuthorItem struct {
 	Country  int       `db:"country"`
 	Category int       `db:"category"`
 }
+
+type AuthorDetails struct {
+	Name     string `db:"name"`
+	Country  string `db:"country"`
+	Category string `db:"category"`
+}
 type AuthorManager interface {
 	GetAuthorByName(name string) (AuthorItem, error)
+	GetAllAuthors() ([]AuthorDetails, error)
 }
